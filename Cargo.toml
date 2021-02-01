@@ -1,0 +1,9 @@
+[package]
+name = "vihko"
+version = "0.1.0"
+authors = ["Tom Gustafsson <tom.gustafsson@iki.fi>"]
+edition = "2018"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+warp = "0.3"
