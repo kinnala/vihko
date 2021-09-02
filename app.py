@@ -3,59 +3,70 @@ import random
 import secrets
 import time
 import zipfile
+import glob
 import logging
 import os.path
+import webbrowser
 from pathlib import Path
 from io import BytesIO
 from datetime import datetime
-from flask import Flask, request, session, redirect, url_for, send_file
+from flask import Flask, request, redirect, url_for, send_file
+import string
 
-
+# printing lowercase
+letters = string.ascii_lowercase
+path = ''.join(random.choice(letters) for i in range(10))
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
-app.secret_key = secrets.token_bytes(10)
-app.config.update(
-    PERMANENT_SESSION_LIFETIME=36000  # 10 hours
-)
 
 
-@app.route('/save', methods=['POST'])
-def save_answer():
-    if 'fid' not in session:
-        raise Exception("Session is broken.")
-    fid = session['fid']
+@app.route('/{}/save/<fid>'.format(path), methods=['POST'])
+def save_answer(fid):
     app.logger.info("Saving {}".format(fid))
     with open("vihko_{}.html".format(fid), "w") as handle:
         handle.write(urllib.parse.unquote_plus(request.get_data()[7:].decode('utf-8')))
     return {}
 
 
-@app.route('/clear')
-def clear_session():
-    session.clear()
-    return r"<p>Istuntoon liittyvät tiedot poistettu.</p>"
-
-
-@app.route('/')
+@app.route('/{}/'.format(path))
 def test():
+    files = glob.glob('vihko_*.html')
+    options = ""
+    for fname in files:
+        options += '<option value="{}">'.format(fname[6:-5])
     return r"""
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Vihko</title>
   <script src="//code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script>
   $(document).ready(function(){
     $(frm.txt).keyup(function(){
-      $(frm).get(0).setAttribute('action', '/edit/'+$(frm.txt).val());
+      $(frm).get(0).setAttribute('action', '/""" + path + r"""/edit/'+$(frm.txt).val());
     });
   });
   </script>
+  <style>
+    body { margin-top: 50px; font-family: sans-serif;}
+    h1 {font-size: 2em; line-height: 2; margin-bottom: 4em;}
+    .answer { border: 1px solid #aaa; padding: 5px; box-sizing: content-box; min-height: 100px; font: 17px "Times New Roman"; }
+    .rich-text-editor img[src^="data:image/svg+xml"] { vertical-align: middle; margin: 4px; padding: 3px 10px; cursor: pointer; border: 1px solid transparent; }
+    .rich-text-editor.rich-text-focused img[src^="data:image/svg+xml"],
+    .rich-text-editor:focus img[src^="data:image/svg+xml"] { background: #EDF9FF; border: 1px solid #E6F2F8; }
+    .rich-text-editor img[src*="data:image/png"] { margin: 4px; }
+    .rich-text-editor:focus img[src*="data:image/png"],
+    .rich-text-editor.rich-text-focused img[src*="data:image/png"] { box-shadow: 0 0 3px 1px rgba(0, 0, 0, .2); }
+    .result { display: none; }
+  </style>
 </head>
 <body>
   <h1>Vihko</h1>
-  <p>Kirjoita tiedoston nimi alla olevaan ruutuun:</p>
   <form id="frm" action="wrong">
-    <input type="text" id="txt" />
+    <input list="files" type="text" id="txt" />
+    <datalist id="files">
+""" + options + r"""
+    </datalist>
     <input type="submit" id="sub" value="Avaa tiedosto" />
   </form>
 </body>
@@ -63,11 +74,8 @@ def test():
 """
 
 
-@app.route('/edit/<fid>')
+@app.route('/{}/edit/<fid>'.format(path))
 def index(fid):
-    #question = questions[qid](int.from_bytes(uid.encode("utf-8"), byteorder="big"))
-    if 'fid' not in session:
-        session['fid'] = fid
     fname = "vihko_{}.html".format(fid)
     if os.path.exists(fname):
         with open(fname, "r") as handle:
@@ -76,18 +84,29 @@ def index(fid):
         answer = ""
         with open(fname, "w") as handle:
             handle.write("")
+    files = glob.glob('vihko_*.html')
+    options = ""
+    for f in files:
+        options += '<option value="{}">'.format(f[6:-5])
     return r"""
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset='utf-8'>
-  <title>vihko v0.1.0</title>
+  <title>Vihko</title>
   <link rel="stylesheet" type="text/css" href="//unpkg.com/@digabi/mathquill/build/mathquill.css">
   <link rel="stylesheet" type="text/css" href="//unpkg.com/rich-text-editor/dist/rich-text-editor.css"/>
   <script src="//code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/bacon.js/1.0.1/Bacon.min.js"></script>
   <script src="//unpkg.com/rich-text-editor/dist/rich-text-editor-bundle.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js">
+  </script>
+  <script>
+  $(document).ready(function(){
+    $(frm.txt).keyup(function(){
+      $(frm).get(0).setAttribute('action', '/""" + path + """/edit/'+$(frm.txt).val());
+    });
+  });
   </script>
   <style>
     body { margin-top: 50px; font-family: sans-serif;}
@@ -106,9 +125,14 @@ def index(fid):
 <article>
   <section>
     <h1>Vihko</h1>
-    <h2>Tiedosto</h2>
-""" + fname + r"""
-    <h2>Vastaus</h2>
+  <form id="frm" action="wrong">
+    <input list="files" type="text" id="txt" />
+    <datalist id="files">
+""" + options + r"""
+    </datalist>
+    <input type="submit" id="sub" value="Avaa tiedosto" />
+  </form>
+<br>
     <div class="answer" id="answer1">
 """ + answer + r"""</div>
   </section>
@@ -152,22 +176,12 @@ def index(fid):
   })
 
   function saveAnswer() {
-    $.post("/save", {answer: $(".answer").html()});
+    $.post("/""" + path + r"""/save/""" + fid + r"""", {answer: $(".answer").html()});
     setTimeout(saveAnswer, 5000);
   }
 
   $(document).ready(function() {
     setTimeout(saveAnswer, 5000);
-  });
-
-  $(".confirm").on("click", function(event){
-      $.post("/save", {answer: $(".answer").html()});
-      if(confirm("Onko tehtävä varmasti valmis? Aikaisempiin tehtäviin ei voi palata.")){
-         return true;
-      } else {
-          event.preventDefault();
-          return false;
-      }
   });
   
   const encodeMultibyteUnicodeCharactersWithEntities = (str) =>
@@ -238,4 +252,5 @@ def index(fid):
 </html>
 """
 
+webbrowser.open_new('http://localhost:5000/{}/'.format(path))
 app.run()
