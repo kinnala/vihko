@@ -249,6 +249,7 @@ def index(fid):
 <br>
     <div class="answer rich-text-editor" id="answer1" contenteditable=true= spellcheck="false" data-js="answer">
 """ + answer + r"""</div>
+  <p>Sivu tallentuu automaattisesti 5 sekunnin välein.</p>
   </section>
 </article>
 <div class="result"><span class="MathJax_Preview" style="color: inherit; display: none;"></span><span class="MathJax_SVG" id="MathJax-Element-1-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;/mrow&gt;&lt;/math&gt;" role="presentation" style="font-size: 100%; display: inline-block; position: relative;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="0" height="0.246ex" viewBox="0 -53 0 105.9" role="img" focusable="false" aria-hidden="true" style="vertical-align: -0.123ex;"><defs></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"></g></svg><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"></mrow></math></span></span><script type="math/tex" id="MathJax-Element-1">{}</script></div>
