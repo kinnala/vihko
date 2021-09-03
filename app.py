@@ -10,36 +10,41 @@ import webbrowser
 from pathlib import Path
 from io import BytesIO
 from datetime import datetime
-from flask import Flask, request, redirect, url_for, send_file
+from flask import Flask, request, redirect, url_for, send_from_directory
 import string
 
 # printing lowercase
 letters = string.ascii_lowercase
 path = ''.join(random.choice(letters) for i in range(10))
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 app.logger.setLevel(logging.INFO)
+
+
+@app.route('/{}/static/<path:path>'.format(path))
+def send_static(path):
+    return send_from_directory('static', path)
 
 
 @app.route('/{}/save/<fid>'.format(path), methods=['POST'])
 def save_answer(fid):
     app.logger.info("Saving {}".format(fid))
-    with open("vihko_{}.html".format(fid), "w") as handle:
+    with open("sivut/vihko_{}.html".format(fid), "w") as handle:
         handle.write(urllib.parse.unquote_plus(request.get_data()[7:].decode('utf-8')))
     return {}
 
 
 @app.route('/{}/'.format(path))
 def test():
-    files = glob.glob('vihko_*.html')
+    files = glob.glob('sivut/vihko_*.html')
     options = ""
     for fname in files:
-        options += '<option value="{}">'.format(fname[6:-5])
+        options += '<option value="{}">'.format(fname[len('sivut/vihko_'):-5])
     return r"""
 <!DOCTYPE html>
 <html>
 <head>
   <title>Vihko</title>
-  <script src="//code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="static/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script>
   $(document).ready(function(){
     $(frm.txt).keyup(function(){
@@ -62,12 +67,13 @@ def test():
 </head>
 <body>
   <h1>Vihko</h1>
-  <form id="frm" action="wrong">
+  <p>Kirjoita sivun nimi alla olevaan kenttään:</p>
+  <form id="frm" action=".">
     <input list="files" type="text" id="txt" />
     <datalist id="files">
 """ + options + r"""
     </datalist>
-    <input type="submit" id="sub" value="Avaa tiedosto" />
+    <input type="submit" id="sub" value="Avaa sivu" />
   </form>
 </body>
 </html>
@@ -76,7 +82,7 @@ def test():
 
 @app.route('/{}/edit/<fid>'.format(path))
 def index(fid):
-    fname = "vihko_{}.html".format(fid)
+    fname = "sivut/vihko_{}.html".format(fid)
     if os.path.exists(fname):
         with open(fname, "r") as handle:
             answer = handle.read()
@@ -84,10 +90,10 @@ def index(fid):
         answer = ""
         with open(fname, "w") as handle:
             handle.write("")
-    files = glob.glob('vihko_*.html')
+    files = glob.glob('sivut/vihko_*.html')
     options = ""
     for f in files:
-        options += '<option value="{}">'.format(f[6:-5])
+        options += '<option value="{}">'.format(f[len('sivut/vihko_'):-5])
     return r"""
 <!DOCTYPE html>
 <html>
@@ -96,7 +102,7 @@ def index(fid):
   <title>Vihko</title>
   <link rel="stylesheet" type="text/css" href="//unpkg.com/@digabi/mathquill/build/mathquill.css">
   <link rel="stylesheet" type="text/css" href="//unpkg.com/rich-text-editor/dist/rich-text-editor.css"/>
-  <script src="//code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="../static/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/bacon.js/1.0.1/Bacon.min.js"></script>
   <script src="//unpkg.com/rich-text-editor/dist/rich-text-editor-bundle.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js">
@@ -125,12 +131,13 @@ def index(fid):
 <article>
   <section>
     <h1>Vihko</h1>
-  <form id="frm" action="wrong">
+<p>Kirjoita sivun nimi alla olevaan kenttään:</p>
+  <form id="frm" action="../">
     <input list="files" type="text" id="txt" />
     <datalist id="files">
 """ + options + r"""
     </datalist>
-    <input type="submit" id="sub" value="Avaa tiedosto" />
+    <input type="submit" id="sub" value="Avaa sivu" />
   </form>
 <br>
     <div class="answer" id="answer1">
