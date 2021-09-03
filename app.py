@@ -28,7 +28,7 @@ def send_static(path):
 @app.route('/{}/save/<fid>'.format(path), methods=['POST'])
 def save_answer(fid):
     app.logger.info("Saving {}".format(fid))
-    with open("sivut/vihko_{}.html".format(fid), "w") as handle:
+    with open("sivut/vihko_{}.html".format(fid), "w", encoding='utf-8') as handle:
         handle.write(urllib.parse.unquote_plus(request.get_data()[7:].decode('utf-8')))
     return {}
 
@@ -84,11 +84,11 @@ def test():
 def index(fid):
     fname = "sivut/vihko_{}.html".format(fid)
     if os.path.exists(fname):
-        with open(fname, "r") as handle:
+        with open(fname, "r", encoding='utf-8') as handle:
             answer = handle.read()
     else:
         answer = ""
-        with open(fname, "w") as handle:
+        with open(fname, "w", encoding='utf-8') as handle:
             handle.write("")
     files = glob.glob('sivut/vihko_*.html')
     options = ""
