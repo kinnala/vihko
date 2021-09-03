@@ -104,8 +104,8 @@ def index(fid):
   <link rel="stylesheet" type="text/css" href="//unpkg.com/rich-text-editor/dist/rich-text-editor.css"/>
   <script src="../static/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="../static/Bacon.min.js"></script>
-  <script src="//unpkg.com/rich-text-editor/dist/rich-text-editor-bundle.js"></script>
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js">
+  <script src="../static/rich-text-editor-bundle.js"></script>
+  <script type="text/javascript" src="../static/MathJax.js">
   </script>
   <script>
   $(document).ready(function(){
