@@ -5,7 +5,7 @@ import logging
 import os.path
 import webbrowser
 from pathlib import Path
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, redirect, url_for
 import string
 
 # printing lowercase
@@ -29,42 +29,12 @@ def save_answer(fid):
 
 
 @app.route('/{}/'.format(path))
-def test():
-    files = glob.glob('sivut/vihko_*.html')
-    options = ""
-    for fname in files:
-        options += '<option value="{}">'.format(fname[len('sivut/vihko_'):-5])
-    return r"""
-<!DOCTYPE html>
-<html>
-<head>
-  <title>vihko</title>
-  <script src="static/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script>
-  $(document).ready(function(){
-    $(frm.txt).keyup(function(){
-      $(frm).get(0).setAttribute('action', '/""" + path + r"""/edit/'+$(frm.txt).val());
-    });
-  });
-  </script>
-  <link rel="stylesheet" type="text/css" href="../static/extra.css">
-</head>
-<body>
-<h1>vihko</h1>
-<form id="frm" action=".">
-  <input list="files" type="text" id="txt" />
-  <datalist id="files">
-""" + options + r"""
-  </datalist>
-  <input type="submit" id="sub" value="Avaa sivu" />
-</form>
-</body>
-</html>
-"""
+def index():
+    return redirect(url_for('edit', fid='testi'))
 
 
 @app.route('/{}/edit/<fid>'.format(path))
-def index(fid):
+def edit(fid):
     fname = "sivut/vihko_{}.html".format(fid)
     if os.path.exists(fname):
         with open(fname, "r", encoding='utf-8') as handle:
