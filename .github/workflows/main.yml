@@ -8,12 +8,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Unzip
-        run: unzip windows.zip
-      - name: Remove unnecessary files
-        run: rm windows.zip
+      - name: Zip
+        run: |
+          unzip windows.zip
+          rm windows.zip
+          zip vihko.zip *
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: '*'
+          files: vihko.zip
