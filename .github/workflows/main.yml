@@ -1,0 +1,19 @@
+name: main
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Unzip
+        run: unzip windows.zip
+      - name: Remove unnecessary files
+        run: rm windows.zip
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: *
