@@ -12,7 +12,7 @@ jobs:
         run: |
           unzip windows.zip
           rm windows.zip
-          zip vihko.zip *
+          zip -r vihko.zip *
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
