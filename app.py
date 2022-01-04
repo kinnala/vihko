@@ -80,9 +80,8 @@ def edit(fid):
 """ + options + r"""
   </datalist>
   <input type="submit" id="sub" value="Avaa" />
-  <span class="savetext">★</span>
 </form>
-<div class="answer rich-text-editor" id="answer1" contenteditable=true= spellcheck="false" data-js="answer" oninput="$('.savetext').css('color', 'red')">
+<div class="answer rich-text-editor" id="answer1" contenteditable=true= spellcheck="false" data-js="answer" oninput="$('#sub').css('color', 'red')">
 """ + answer + r"""</div>
 </div>
 </section>
@@ -127,7 +126,7 @@ def edit(fid):
 
   function saveAnswer() {
     $.post("/""" + path + r"""/save/""" + fid + r"""", {answer: $(".answer").html()});
-    $(".savetext").css('color', 'green');
+    $("#sub").css('color', 'green');
     setTimeout(saveAnswer, 5000);
   }
 
