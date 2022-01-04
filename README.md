@@ -6,6 +6,8 @@ https://math-demo.abitti.fi/.
 The variant has been modified to send periodically the contents of the text
 area to the Flask backend which saves them to a file.
 
+<center><img src="https://user-images.githubusercontent.com/973268/148090191-72e45352-a8a9-4f2e-9910-19eb0660985b.png" /></center>
+
 ## Installation
 
 ### Windows

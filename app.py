@@ -70,6 +70,7 @@ def edit(fid):
   <link rel="stylesheet" type="text/css" href="../static/extra.css">
 </head>
 <body>
+<h1>vihko</h1>
 <div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_SVG_Hidden"><br></br></div><svg><defs id="MathJax_SVG_glyphs"></defs></svg></div><div id="MathJax_Message" style="display: none;"></div>
 <article>
 <section>
