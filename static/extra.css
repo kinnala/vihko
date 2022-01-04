@@ -1,6 +1,7 @@
-body { margin-top: 50px; font-family: sans-serif; }
-h1 { text-align: center; font-size: 2em; line-height: 2; margin-bottom: 4em; }
-.answer { border: 1px solid #aaa; padding: 5px; box-sizing: content-box; min-height: 100px; font: 17px "Times New Roman"; }
+body { margin-top: 250px; font-family: sans-serif; background-image: url("bg.png"); background-repeat: repeat; }
+h1 { text-align: center; line-height: 2; margin-bottom: 4em; font: 3.5em "Times New Roman"; }
+.answer { margin-top: 10px; border: 1px solid #aaa; padding: 5px; box-sizing: content-box; min-height: 100px; font: 17px "Times New Roman"; background-color: white; }
+.wrapper { max-width: 980px; margin-left: auto; margin-right: auto; }
 .rich-text-editor img[src^="data:image/svg+xml"] { vertical-align: middle; margin: 4px; padding: 3px 10px; cursor: pointer; border: 1px solid transparent; }
 .rich-text-editor.rich-text-focused img[src^="data:image/svg+xml"],
 .rich-text-editor:focus img[src^="data:image/svg+xml"] { background: #EDF9FF; border: 1px solid #E6F2F8; }

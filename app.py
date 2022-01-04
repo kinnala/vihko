@@ -73,17 +73,18 @@ def edit(fid):
 <div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_SVG_Hidden"><br></br></div><svg><defs id="MathJax_SVG_glyphs"></defs></svg></div><div id="MathJax_Message" style="display: none;"></div>
 <article>
 <section>
-<h1>vihko</h1>
-<div class="answer rich-text-editor" id="answer1" contenteditable=true= spellcheck="false" data-js="answer">
-""" + answer + r"""</div>
-<br>
+<div class="wrapper">
 <form id="frm" action="../">
   <input list="files" type="text" id="txt" />
   <datalist id="files">
 """ + options + r"""
   </datalist>
-  <input type="submit" id="sub" value="Avaa sivu" />
+  <input type="submit" id="sub" value="Avaa" />
+  <span class="savetext">★</span>
 </form>
+<div class="answer rich-text-editor" id="answer1" contenteditable=true= spellcheck="false" data-js="answer" oninput="$('.savetext').css('color', 'red')">
+""" + answer + r"""</div>
+</div>
 </section>
 </article>
 <div class="result"><span class="MathJax_Preview" style="color: inherit; display: none;"></span><span class="MathJax_SVG" id="MathJax-Element-1-Frame" tabindex="0" data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mrow class=&quot;MJX-TeXAtom-ORD&quot;&gt;&lt;/mrow&gt;&lt;/math&gt;" role="presentation" style="font-size: 100%; display: inline-block; position: relative;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="0" height="0.246ex" viewBox="0 -53 0 105.9" role="img" focusable="false" aria-hidden="true" style="vertical-align: -0.123ex;"><defs></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"></g></svg><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow class="MJX-TeXAtom-ORD"></mrow></math></span></span><script type="math/tex" id="MathJax-Element-1">{}</script></div>
@@ -126,6 +127,7 @@ def edit(fid):
 
   function saveAnswer() {
     $.post("/""" + path + r"""/save/""" + fid + r"""", {answer: $(".answer").html()});
+    $(".savetext").css('color', 'green');
     setTimeout(saveAnswer, 5000);
   }
 
