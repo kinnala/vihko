@@ -81,7 +81,7 @@ def edit(fid):
   </datalist>
   <input type="submit" id="sub" value="Avaa" />
 </form>
-<div class="answer rich-text-editor" id="answer1" contenteditable=true= spellcheck="false" data-js="answer" oninput="$('#sub').css('color', 'red')">
+<div class="answer rich-text-editor" id="answer1" contenteditable=true= spellcheck="false" data-js="answer" oninput="$('#sub').attr('disabled', true);">
 """ + answer + r"""</div>
 </div>
 </section>
@@ -126,7 +126,7 @@ def edit(fid):
 
   function saveAnswer() {
     $.post("/""" + path + r"""/save/""" + fid + r"""", {answer: $(".answer").html()});
-    $("#sub").css('color', 'green');
+    $("#sub").removeAttr('disabled');
     setTimeout(saveAnswer, 5000);
   }
 
