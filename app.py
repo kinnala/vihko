@@ -75,7 +75,7 @@ def edit(fid):
 <section>
 <div class="wrapper">
 <form id="frm" action="../">
-  <input list="files" type="text" id="txt" />
+  <input list="files" placeholder='""" + fid + """' type="text" id="txt" />
   <datalist id="files">
 """ + options + r"""
   </datalist>
