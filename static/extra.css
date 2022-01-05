@@ -1,6 +1,8 @@
-body { margin-top: 80px; font-family: sans-serif; background-color: #d4e9ff; }
-h1 { text-align: center; line-height: 2; margin-bottom: 60px; font: 3.5em "Times New Roman"; }
-.answer { margin-top: 5px; border: 1px solid #aaa; padding: 5px; box-sizing: content-box; min-height: 100px; font: 17px "Times New Roman"; background-color: white; }
+@font-face{font-family:Noto Sans;font-style:normal;font-weight:400;src:url(NotoSans-Regular.ttf) format("truetype")}
+body { margin-top: 80px; background-color: #d4e9ff; font: 17px "Noto Sans"; }
+input { font: 17px "Noto Sans"; }
+h1 { text-align: center; line-height: 2; margin-bottom: 60px; font: 3.5em "Noto Sans"; }
+.answer { margin-top: 5px; border: 1px solid #aaa; padding: 5px; box-sizing: content-box; min-height: 100px; font: 17px "Noto Sans"; background-color: white; }
 .wrapper { max-width: 980px; margin-left: auto; margin-right: auto; }
 .rich-text-editor img[src^="data:image/svg+xml"] { vertical-align: middle; margin: 4px; padding: 3px 10px; cursor: pointer; border: 1px solid transparent; }
 .rich-text-editor.rich-text-focused img[src^="data:image/svg+xml"],
